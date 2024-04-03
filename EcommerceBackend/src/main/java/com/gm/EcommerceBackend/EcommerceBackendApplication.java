@@ -10,4 +10,8 @@ public class EcommerceBackendApplication {
 		SpringApplication.run(EcommerceBackendApplication.class, args);
 	}
 
+//	@Bean
+//	public CommandLineRunner commandLineRunner(){
+//		return args -> {};
+//	}
 }
