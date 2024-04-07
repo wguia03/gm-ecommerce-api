@@ -41,4 +41,24 @@ public class CartItemService {
         cart.get().setTotal_price(cart.get().getTotal_price() + cartItem.getItem_price());
         cartRepository.save(cart.get());
     }
+
+    public void deleteCartItem(int cartItemId) throws ResourceNotFoundException {
+
+        Optional<CartItem> cartItem = cartItemRepository.findById(cartItemId);
+
+        if(cartItem.isEmpty()){
+            throw new ResourceNotFoundException("Cart item is not available");
+        }
+
+        Optional<Cart> cart = cartRepository.findById(cartItem.get().getCart().getId());
+
+        if(cart.isEmpty()){
+            throw new ResourceNotFoundException("Cart is not available");
+        }
+
+        cart.get().setTotal_price(cart.get().getTotal_price() - cartItem.get().getItem_price());
+        cartRepository.save(cart.get());
+
+        cartItemRepository.deleteById(cartItemId);
+    }
 }
