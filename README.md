@@ -12,23 +12,17 @@
 - Carrito de compras
 - Registro de historial de compras
 - Categorias de productos:
-    - Almacenamiento
-    - Sonido
-    - Cámaras
+    - Almacenamiento (HDD, SSD, USB)
     - Case
-    - Fuente de poder
-    - Periféricos
-    - Impresoras
-    - Laptops
-    - Memorias
-    - Monitores
-    - Placa madre
-    - Procesadores
+    - Laptop
+    - Periférico (teclado, mouse, monitor, impresora, parlante, micrófono, webcam)
+    - Procesador
+    - RAM
     - Otros
 
 ## Casos de uso
 1. Registro e inicio de sesión
-2. Buscar productos (por nombre o categoría)
+2. Buscar productos (x)
 3. Agregar productos al carrito
 4. Eliminar productos del carrito
 5. Elegir una modalidad de pago

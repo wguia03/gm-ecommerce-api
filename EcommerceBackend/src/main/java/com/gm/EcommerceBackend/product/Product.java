@@ -1,11 +1,15 @@
 package com.gm.EcommerceBackend.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gm.EcommerceBackend.cart.CartItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -24,11 +28,18 @@ public class Product {
     @Column(nullable = false)
     private String description;
 
-    @Column(name = "image")
+    private Double price;
+
+    private Integer stock_quantity;
+
     private String image_url;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     @JsonIgnoreProperties("products")
     private ProductCategory productCategory;
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore // correcto?
+    private List<CartItem> cartItems;
 }
