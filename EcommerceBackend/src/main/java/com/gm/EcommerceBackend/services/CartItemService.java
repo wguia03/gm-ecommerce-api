@@ -1,8 +1,13 @@
-package com.gm.EcommerceBackend.cart;
+package com.gm.EcommerceBackend.services;
 
-import com.gm.EcommerceBackend.exception.ResourceNotFoundException;
-import com.gm.EcommerceBackend.product.Product;
-import com.gm.EcommerceBackend.product.ProductRepository;
+import com.gm.EcommerceBackend.payloads.CartItemDTO;
+import com.gm.EcommerceBackend.exceptions.ResourceNotFoundException;
+import com.gm.EcommerceBackend.models.Cart;
+import com.gm.EcommerceBackend.models.CartItem;
+import com.gm.EcommerceBackend.models.Product;
+import com.gm.EcommerceBackend.repositories.CartItemRepository;
+import com.gm.EcommerceBackend.repositories.CartRepository;
+import com.gm.EcommerceBackend.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

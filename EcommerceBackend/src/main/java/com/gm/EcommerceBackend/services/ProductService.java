@@ -1,5 +1,7 @@
-package com.gm.EcommerceBackend.product;
+package com.gm.EcommerceBackend.services;
 
+import com.gm.EcommerceBackend.models.Product;
+import com.gm.EcommerceBackend.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

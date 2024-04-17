@@ -1,4 +1,4 @@
-package com.gm.EcommerceBackend.exception;
+package com.gm.EcommerceBackend.exceptions;
 
 public class ResourceNotFoundException extends Exception{
     public ResourceNotFoundException(String message) {

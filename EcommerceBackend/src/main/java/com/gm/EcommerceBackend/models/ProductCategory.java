@@ -1,4 +1,4 @@
-package com.gm.EcommerceBackend.product;
+package com.gm.EcommerceBackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;

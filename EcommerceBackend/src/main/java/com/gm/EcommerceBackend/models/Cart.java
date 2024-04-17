@@ -1,4 +1,4 @@
-package com.gm.EcommerceBackend.cart;
+package com.gm.EcommerceBackend.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

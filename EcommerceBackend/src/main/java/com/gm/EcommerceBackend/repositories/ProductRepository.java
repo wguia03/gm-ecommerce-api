@@ -1,5 +1,6 @@
-package com.gm.EcommerceBackend.product;
+package com.gm.EcommerceBackend.repositories;
 
+import com.gm.EcommerceBackend.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

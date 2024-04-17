@@ -1,5 +1,7 @@
-package com.gm.EcommerceBackend.product;
+package com.gm.EcommerceBackend.controllers;
 
+import com.gm.EcommerceBackend.models.Product;
+import com.gm.EcommerceBackend.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
