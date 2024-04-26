@@ -30,7 +30,7 @@
             Algorithm algorithm = Algorithm.HMAC256(this.privateKey);
 
             String username = authentication.getPrincipal().toString();
-            String authorities =authentication.getAuthorities()
+            String authorities = authentication.getAuthorities()
                     .stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.joining(","));

@@ -1,6 +1,6 @@
 package com.gm.EcommerceBackend.controllers;
 
-import com.gm.EcommerceBackend.models.Product;
+import com.gm.EcommerceBackend.entities.Product;
 import com.gm.EcommerceBackend.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +13,17 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api")
 public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/{name}")
+    @GetMapping("/public/products/{name}")
     public ResponseEntity<List<Product>> findAllByName(@PathVariable String name){
         return ResponseEntity.ok(productService.findProductsByName(name));
     }
 
-    @GetMapping("/byCategory/{catName}")
+    @GetMapping("/public/products/byCategory/{catName}")
     public ResponseEntity<List<Product>> findAllByCategoryName(@PathVariable String catName){
         return ResponseEntity.ok(productService.findProductsByCategoryName(catName));
     }
