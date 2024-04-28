@@ -1,10 +1,12 @@
 package com.gm.EcommerceBackend.services;
 
+import com.gm.EcommerceBackend.entities.Cart;
 import com.gm.EcommerceBackend.entities.Role;
 import com.gm.EcommerceBackend.entities.UserEntity;
 import com.gm.EcommerceBackend.payloads.AuthCreateUserRequest;
 import com.gm.EcommerceBackend.payloads.AuthLoginRequest;
 import com.gm.EcommerceBackend.payloads.AuthResponse;
+import com.gm.EcommerceBackend.repositories.CartRepository;
 import com.gm.EcommerceBackend.repositories.RoleRepository;
 import com.gm.EcommerceBackend.repositories.UserRepository;
 import com.gm.EcommerceBackend.utils.JwtUtils;
@@ -33,6 +35,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtUtils jwtUtils;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final CartRepository cartRepository;
 
     public AuthResponse createUser(AuthCreateUserRequest createRoleRequest) {
 
@@ -46,7 +49,19 @@ public class UserService {
             throw new IllegalArgumentException("The roles specified does not exist.");
         }
 
-        UserEntity userEntity = UserEntity.builder().username(username).password(passwordEncoder.encode(password)).roles(roleEntityList).isEnabled(true).accountNoLocked(true).accountNoExpired(true).credentialNoExpired(true).build();
+        Cart cart = new Cart();
+        Cart savedCart = cartRepository.save(cart);
+
+        UserEntity userEntity = UserEntity.builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .roles(roleEntityList)
+                .isEnabled(true)
+                .accountNoLocked(true)
+                .accountNoExpired(true)
+                .credentialNoExpired(true)
+                .cart(savedCart)
+                .build();
 
         UserEntity userSaved = userRepository.save(userEntity);
 
@@ -71,18 +86,18 @@ public class UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = jwtUtils.createToken(authentication);
-        return new AuthResponse(username, "User loged succesfully", accessToken, true);
+        return new AuthResponse(username, "User logged successfully", accessToken, true);
     }
 
     public Authentication authenticate(String username, String password) {
         UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
 
         if (userDetails == null) {
-            throw new BadCredentialsException(String.format("Invalid username or password"));
+            throw new BadCredentialsException("Invalid username");
         }
 
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new BadCredentialsException("Incorrect Password");
+            throw new BadCredentialsException("Invalid Password");
         }
 
         return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());

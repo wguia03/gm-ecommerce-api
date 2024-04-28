@@ -15,11 +15,11 @@ public class ProductCategoryService {
 
     private final ProductCategoryRepository productCategoryRepository;
 
-    public ProductCategory findById(Integer id) throws ResourceNotFoundException {
+    public ProductCategory findProductCategory(int id) throws ResourceNotFoundException {
         return productCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product category not found"));
     }
 
-    public List<ProductCategory> findAll(){
+    public List<ProductCategory> findAllProductCategories(){
         return productCategoryRepository.findAll();
     }
 
@@ -28,7 +28,7 @@ public class ProductCategoryService {
         ProductCategory parentCategory = null;
 
         if (productCategoryDTO.parent_id() != null) {
-            parentCategory = this.findById(productCategoryDTO.parent_id());
+            parentCategory = this.findProductCategory(productCategoryDTO.parent_id());
         }
 
         ProductCategory productCategory = ProductCategory.builder()
@@ -41,20 +41,20 @@ public class ProductCategoryService {
 
     public void updateProductCategory(int id, ProductCategoryDTO productCategoryDTO) throws ResourceNotFoundException {
 
-        ProductCategory existingProduct = findById(id);
+        ProductCategory existingProduct = this.findProductCategory(id);
         ProductCategory parentCategory = null;
 
         if (productCategoryDTO.parent_id() != null) {
-            parentCategory = this.findById(productCategoryDTO.parent_id());
+            parentCategory = this.findProductCategory(productCategoryDTO.parent_id());
+            existingProduct.setParentCategory(parentCategory);
         }
 
         existingProduct.setName(productCategoryDTO.name());
-        existingProduct.setParentCategory(parentCategory);
-
         productCategoryRepository.save(existingProduct);
     }
 
     public void deleteProductCategory(int id) throws ResourceNotFoundException {
+        this.findProductCategory(id);
         productCategoryRepository.deleteById(id);
     }
 }

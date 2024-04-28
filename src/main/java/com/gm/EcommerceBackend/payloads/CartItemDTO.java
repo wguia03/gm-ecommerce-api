@@ -1,3 +1,9 @@
 package com.gm.EcommerceBackend.payloads;
 
-public record CartItemDTO(int product_id, int cart_id, int quantity) {}
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+public record CartItemDTO(@NotNull Integer product_id,
+                          @NotNull Integer cart_id,
+                          @NotNull @Positive Integer quantity) {
+}

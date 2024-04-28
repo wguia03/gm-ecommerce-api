@@ -12,5 +12,4 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT p FROM Product p WHERE p.productCategory.name = :categoryName")
     List<Product> findByCategoryName(String categoryName);
-
 }

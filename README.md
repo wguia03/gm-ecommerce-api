@@ -33,12 +33,12 @@
 - [x] Buscar productos
 - [x] Agregar y eliminar productos del carrito
 - [ ] Elegir una modalidad de pago y envío
-- [ ] Comprar productos
+- [ ] Realizar compra
 - [ ] Revisar estado de compra
 
 ### Funcionalidades - Administrador
-- [ ] Agregar, editar y eliminar productos
-- [ ] Gestionar inventario de productos
+- [x] Agregar, editar y eliminar productos
+- [x] Gestionar inventario de productos
 - [ ] Gestionar pedidos de clientes
 
 ### Tech Stack
@@ -49,3 +49,4 @@
 - Spring Data JPA
 - Hibernate
 - PostgreSQL
+- Swagger

@@ -19,6 +19,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private double total_price = 0;
 
     @OneToMany(mappedBy = "cart")

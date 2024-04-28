@@ -5,6 +5,7 @@ import com.gm.EcommerceBackend.exceptions.ResourceNotFoundException;
 import com.gm.EcommerceBackend.payloads.ProductCategoryDTO;
 import com.gm.EcommerceBackend.payloads.ResponseMessage;
 import com.gm.EcommerceBackend.services.ProductCategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,22 +21,22 @@ public class ProductCategoryController {
 
     @GetMapping("public/productCategories")
     public ResponseEntity<List<ProductCategory>> findProductCategory() {
-        return ResponseEntity.ok(productCategoryService.findAll());
+        return ResponseEntity.ok(productCategoryService.findAllProductCategories());
     }
 
     @GetMapping("/public/productCategories/{id}")
     public ResponseEntity<ProductCategory> findProductCategory(@PathVariable int id) throws ResourceNotFoundException {
-        return ResponseEntity.ok(productCategoryService.findById(id));
+        return ResponseEntity.ok(productCategoryService.findProductCategory(id));
     }
 
     @PostMapping("/admin/productCategories")
-    public ResponseEntity<ResponseMessage> saveProductCategory(@RequestBody ProductCategoryDTO productCategoryDTO) throws ResourceNotFoundException {
+    public ResponseEntity<ResponseMessage> saveProductCategory(@RequestBody @Valid ProductCategoryDTO productCategoryDTO) throws ResourceNotFoundException {
         productCategoryService.saveProductCategory(productCategoryDTO);
         return ResponseEntity.ok(new ResponseMessage("Product category saved successfully"));
     }
 
     @PutMapping("/admin/productCategories/{id}")
-    public ResponseEntity<ResponseMessage> updateProductCategory(@PathVariable int id, @RequestBody ProductCategoryDTO productCategoryDTO) throws ResourceNotFoundException {
+    public ResponseEntity<ResponseMessage> updateProductCategory(@PathVariable int id, @RequestBody @Valid ProductCategoryDTO productCategoryDTO) throws ResourceNotFoundException {
         productCategoryService.updateProductCategory(id, productCategoryDTO);
         return ResponseEntity.ok(new ResponseMessage("Product category updated successfully"));
     }

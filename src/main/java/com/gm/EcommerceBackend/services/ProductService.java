@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,32 +18,24 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
 
-    public Product findProduct(Integer id) throws ResourceNotFoundException {
+    public Product findProduct(int id) throws ResourceNotFoundException {
 
-        Optional<Product> product = productRepository.findById(id);
-
-        if(product.isEmpty()){
-            throw new ResourceNotFoundException("Product not found");
-        }
-
-        return product.get();
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product is not available"));
     }
 
-    public List<Product> findProductsByName(String name){
+    public List<Product> findProductsByName(String name) {
         return productRepository.findAllByNameStartsWithIgnoreCase(name);
     }
 
-    public List<Product> findProductsByCategoryName(String catName){
+    public List<Product> findProductsByCategoryName(String catName) {
         return productRepository.findByCategoryName(catName);
     }
 
-    public void saveProduct(ProductDTO productDTO) throws ResourceNotFoundException {
+    public Product saveProduct(ProductDTO productDTO) throws ResourceNotFoundException {
 
-        Optional<ProductCategory> productCategory = productCategoryRepository.findById(productDTO.category_id());
-
-        if(productCategory.isEmpty()){
-            throw new ResourceNotFoundException("Category not found");
-        }
+        ProductCategory productCategory = productCategoryRepository.findById(productDTO.category_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Product category is not available"));
 
         Product product = Product.builder()
                 .name(productDTO.name())
@@ -52,43 +43,45 @@ public class ProductService {
                 .price(productDTO.price())
                 .stock_quantity(productDTO.stock_quantity())
                 .image_url(productDTO.image_url())
-                .productCategory(productCategory.get())
+                .productCategory(productCategory)
                 .build();
-        productRepository.save(product);
+
+        return productRepository.save(product);
     }
 
-    public void updateProduct(Integer id, ProductDTO productDTO) throws ResourceNotFoundException {
+    public Product updateProduct(int id, ProductDTO productDTO) throws ResourceNotFoundException {
 
-        Optional<Product> existingProduct = productRepository.findById(id);
+        Product existingProduct = this.findProduct(id);
 
-        if(existingProduct.isEmpty()){
-            throw new ResourceNotFoundException("Product not found");
-        }
+        ProductCategory productCategory = productCategoryRepository.findById(productDTO.category_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Product category is not available"));
 
-        Optional<ProductCategory> productCategory = productCategoryRepository.findById(productDTO.category_id());
+        existingProduct.setName(productDTO.name());
+        existingProduct.setDescription(productDTO.description());
+        existingProduct.setPrice(productDTO.price());
+        existingProduct.setStock_quantity(productDTO.stock_quantity());
+        existingProduct.setImage_url(productDTO.image_url());
+        existingProduct.setProductCategory(productCategory);
 
-        if(productCategory.isEmpty()){
-            throw new ResourceNotFoundException("Category not found");
-        }
-
-        existingProduct.get().setName(productDTO.name());
-        existingProduct.get().setDescription(productDTO.description());
-        existingProduct.get().setPrice(productDTO.price());
-        existingProduct.get().setStock_quantity(productDTO.stock_quantity());
-        existingProduct.get().setImage_url(productDTO.image_url());
-        existingProduct.get().setProductCategory(productCategory.get());
-
-        productRepository.save(existingProduct.get());
+        return productRepository.save(existingProduct);
     }
 
-    public void deleteProduct(Integer id) throws ResourceNotFoundException{
+    public void deleteProduct(int id) throws ResourceNotFoundException {
 
-        Optional<Product> product = productRepository.findById(id);
+        Product product = this.findProduct(id);
+        productRepository.delete(product);
+    }
 
-        if(product.isEmpty()){
-            throw new ResourceNotFoundException("Product not found");
+    public Product modifyProductStock(int id, int quantity) throws ResourceNotFoundException {
+
+        Product product = this.findProduct(id);
+        int updatedStock = product.getStock_quantity() + quantity;
+
+        if (updatedStock < 0){
+            throw new IllegalArgumentException("Stock quantity cannot be a negative value");
         }
 
-        productRepository.delete(product.get());
+        product.setStock_quantity(updatedStock);
+        return productRepository.save(product);
     }
 }

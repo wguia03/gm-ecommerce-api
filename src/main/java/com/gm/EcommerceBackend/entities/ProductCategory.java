@@ -26,7 +26,6 @@ public class ProductCategory {
 
     @ManyToOne
     @JoinColumn(name = "parent_category_id")
-    @JsonIgnoreProperties("products")
     private ProductCategory parentCategory;
 
     @JsonIgnore

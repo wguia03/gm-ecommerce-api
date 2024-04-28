@@ -1,4 +1,14 @@
 package com.gm.EcommerceBackend.payloads;
 
-public record ProductDTO(String name, String description, double price, int stock_quantity, String image_url, int category_id) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+public record ProductDTO(
+        @NotBlank String name,
+        String description,
+        @NotNull Double price,
+        @NotNull @Positive Integer stock_quantity,
+        String image_url,
+        @NotNull Integer category_id) {
 }
