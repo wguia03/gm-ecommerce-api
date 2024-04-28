@@ -21,15 +21,15 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
     private String description;
 
-    private Double price;
+    private double price;
 
-    private Integer stock_quantity;
+    private int stock_quantity;
 
     private String image_url;
 
@@ -39,6 +39,6 @@ public class Product {
     private ProductCategory productCategory;
 
     @OneToMany(mappedBy = "product")
-    @JsonIgnore // correcto?
+    @JsonIgnore
     private List<CartItem> cartItems;
 }

@@ -1,39 +1,50 @@
-# GM Ecommerce API
-- API REST desarrollada para un Ecommerce orientado a la venta de productos de cómputo
-- Arquitectura en capas: Presentación, dominio y acceso a datos
+## GM Ecommerce API
+- API REST para un e-commerce orientado a la venta de dispositivos de cómputo
+- Arquitectura en capas
+- Integración con sistemas externos
+- Autenticación y autorización con JWT
+- Roles: Administrador, cliente e invitado
 - Ejemplo: https://computactus.com.pe/web/marcas
 
-## Modelo Entidad - Relación
+### Modelo Entidad - Relación
 ![ER-diagram](./ecommerce-db.drawio.png)
 
-## Requerimientos
-- Diferentes modalidades de pago (tarjeta de crédito, débito, paypal)
-- Diferentes modalidades de envío (a domicilio, punto de entrega, retiro en sucursal)
-- Carrito de compras
-- Registro de historial de compras
-- Categorias de productos:
-    - Almacenamiento (HDD, SSD, USB)
-    - Case
-    - Laptop
-    - Periférico (teclado, mouse, monitor, impresora, parlante, micrófono, webcam)
-    - Procesador
-    - RAM
-    - Otros
 
-## Casos de uso
-1. Registro e inicio de sesión
-2. Buscar productos (x)
-3. Agregar productos al carrito
-4. Eliminar productos del carrito
-5. Elegir una modalidad de pago
-6. Elegir una modalidad de envío
-7. Comprar producto
-8. Revisar el estado de la compra
+### Categorías de productos
+1. Almacenamiento
+   1. HDD
+   2. SSD
+   3. USB
+2. Case
+3. Laptop
+4. Periféricos
+   1. Teclado
+   2. Mouse
+   3. Monitor
+   4. Impresora
+   5. Parlante
+   6. Micrófono
+   7. Webcam
+5. Procesador
+6. RAM
+7. Otros
 
-## Tech Stack
-- Java 17
-- Spring Framework 6
-- Spring Boot 3
+### Funcionalidades - Cliente
+- [x] Buscar productos
+- [x] Agregar y eliminar productos del carrito
+- [ ] Elegir una modalidad de pago y envío
+- [ ] Comprar productos
+- [ ] Revisar estado de compra
+
+### Funcionalidades - Administrador
+- [ ] Agregar, editar y eliminar productos
+- [ ] Gestionar inventario de productos
+- [ ] Gestionar pedidos de clientes
+
+### Tech Stack
+- Java 21
+- Spring Framework
+- Spring Boot
 - Spring Security
 - Spring Data JPA
 - Hibernate

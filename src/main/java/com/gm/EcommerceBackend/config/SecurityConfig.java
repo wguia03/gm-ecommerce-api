@@ -31,10 +31,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
-                    http.requestMatchers("/api/auth/**", "/api/public/**").permitAll();
                     http.requestMatchers("/api/user/**").hasRole("USER");
                     http.requestMatchers("/api/admin/**").hasRole("ADMIN");
-                    http.anyRequest().denyAll();
+                    http.anyRequest().permitAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();

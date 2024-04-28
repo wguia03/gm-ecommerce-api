@@ -1,5 +1,6 @@
 package com.gm.EcommerceBackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class ProductCategory {
     @JsonIgnoreProperties("products")
     private ProductCategory parentCategory;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "productCategory")
     private List<Product> products;
 }
