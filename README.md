@@ -1,10 +1,9 @@
 ## GM Ecommerce API
-- API REST para un e-commerce orientado a la venta de dispositivos de cómputo
+- API RESTful para un e-commerce orientado a la venta de dispositivos de cómputo
 - Arquitectura en capas
 - Integración con sistemas externos
 - Autenticación y autorización con JWT
 - Roles: Administrador, cliente e invitado
-- Ejemplo: https://computactus.com.pe/web/marcas
 
 ### Modelo Entidad - Relación
 ![ER-diagram](./ecommerce-db.drawio.png)
