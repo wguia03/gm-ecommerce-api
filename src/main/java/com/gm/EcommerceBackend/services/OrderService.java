@@ -24,29 +24,27 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final ProductRepository productRepository;
+    private final CartItemRepository cartItemRepository;
+    private final CartRepository cartRepository;
 
     public PurchaseOrder createOrder(PurchaseOrderDTO purchaseOrderDTO) throws NotImplementedException, ResourceNotFoundException {
 
-        if (purchaseOrderDTO.paymentMethod().equalsIgnoreCase("PAYPAL")) {
-            throw new NotImplementedException("Paypal payment is not available now");
-        }
-
-        // Extract data from cart items
         UserEntity user = userService.findUserById(purchaseOrderDTO.userId());
-
         Cart cart = user.getCart();
 
         List<CartItem> cartItemList = cart.getCartItemList();
-
-        PaymentMethod paymentMethod = paymentMethodRepository.findByName(PaymentMethodEnum.valueOf("CASH"));
 
         if (cartItemList.isEmpty()) {
             throw new NoSuchElementException("No cart item found");
         }
 
+        Payment payment = Payment.builder()
+                .paymentMethod(paymentMethodRepository.findByName(PaymentMethodEnum.valueOf("CASH")))
+                .build();
+
         PurchaseOrder purchaseOrder = PurchaseOrder.builder()
                 .user(user)
-                .paymentMethod(paymentMethod)
+                .payment(payment)
                 .orderDate(new Date())
                 .deliveryBranch(deliveryBranchRepository.findByName(DeliveryBranchEnum.valueOf(purchaseOrderDTO.deliveryBranch())))
                 .build();
@@ -78,11 +76,21 @@ public class OrderService {
 
         orderItemRepository.saveAll(orderItemList);
 
+        purchaseOrder.getPayment().setTotalPrice(cart.getTotal_price());
+
         OrderStatus orderStatus = orderStatusRepository.findByStatus(OrderStatusEnum.valueOf("CONFIRMED"));
         purchaseOrder.setOrderStatus(orderStatus);
 
-        purchaseOrder.setTotalPrice(cart.getTotal_price());
+        cartItemRepository.deleteAll(cartItemList);
+        cart.setTotal_price(0);
+        cartRepository.save(cart);
 
         return orderRepository.save(purchaseOrder);
+    }
+
+    public String getOrderStatus(Integer id) throws ResourceNotFoundException {
+        return orderRepository.findById(id)
+                .map(order -> order.getOrderStatus().getStatus().name())
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
     }
 }

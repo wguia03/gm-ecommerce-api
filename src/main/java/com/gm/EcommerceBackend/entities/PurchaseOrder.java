@@ -21,23 +21,18 @@ public class PurchaseOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "paymentId", nullable = false)
+    private Payment payment;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     @JsonIgnore
     private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "paymentMethodId", nullable = false)
-    private PaymentMethod paymentMethod;
-
-    @Column(nullable = false)
-    private boolean isPaid = false;
-
-    @ManyToOne
     @JoinColumn(name = "orderStatusId")
     private OrderStatus orderStatus;
-
-    private Double totalPrice;
 
     @Column(nullable = false)
     private Date orderDate;

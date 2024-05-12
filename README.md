@@ -1,9 +1,8 @@
 ## GM Ecommerce API
-- API RESTful para un e-commerce orientado a la venta de dispositivos de cómputo
+- API RESTful para un ecommerce orientado a la venta de dispositivos de cómputo
 - Arquitectura en capas
 - Integración con Paypal
-- Autenticación y autorización con JWT
-- Roles: Administrador, cliente e invitado
+- Los roles son administrador, cliente e invitado
 
 ### Modelo Entidad - Relación
 ![ER-diagram](./ecommerce-db.drawio.png)
@@ -33,7 +32,7 @@
 - [x] Agregar y eliminar productos del carrito
 - [ ] Elegir una modalidad de pago
 - [x] Realizar compra
-- [ ] Revisar estado de compra
+- [x] Revisar estado de compra
 
 ### Funcionalidades - Administrador
 - [x] Agregar, editar y eliminar productos
@@ -44,8 +43,10 @@
 - Java 21
 - Spring Framework
 - Spring Boot
-- Spring Security
 - Spring Data JPA
 - Hibernate
+- Spring Security
+- JWT
+- Paypal SDK
 - PostgreSQL
 - Swagger
