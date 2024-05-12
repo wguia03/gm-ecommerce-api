@@ -1,7 +1,7 @@
 ## GM Ecommerce API
 - API RESTful para un e-commerce orientado a la venta de dispositivos de cómputo
 - Arquitectura en capas
-- Integración con sistemas externos
+- Integración con Paypal
 - Autenticación y autorización con JWT
 - Roles: Administrador, cliente e invitado
 
@@ -31,8 +31,8 @@
 ### Funcionalidades - Cliente
 - [x] Buscar productos
 - [x] Agregar y eliminar productos del carrito
-- [ ] Elegir una modalidad de pago y envío
-- [ ] Realizar compra
+- [ ] Elegir una modalidad de pago
+- [x] Realizar compra
 - [ ] Revisar estado de compra
 
 ### Funcionalidades - Administrador
