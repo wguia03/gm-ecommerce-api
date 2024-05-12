@@ -11,6 +11,8 @@ import com.gm.EcommerceBackend.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CartItemService {
@@ -19,7 +21,12 @@ public class CartItemService {
     private final CartItemRepository cartItemRepository;
     private final CartRepository cartRepository;
 
-    public void saveCartItem(CartItemDTO cartItemDTO) throws ResourceNotFoundException {
+    public List<CartItem> getAllCartItemsByCartId(int id) throws ResourceNotFoundException {
+        cartRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cart is not available"));
+        return cartItemRepository.findByCartId(id);
+    }
+
+    public CartItem saveCartItem(CartItemDTO cartItemDTO) throws ResourceNotFoundException {
 
         Cart cart = cartRepository.findById(cartItemDTO.cart_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Cart is not available"));
@@ -34,8 +41,8 @@ public class CartItemService {
                 .product(product).build();
 
         cart.setTotal_price(cart.getTotal_price() + cartItem.getItem_price());
-        cartItemRepository.save(cartItem);
         cartRepository.save(cart);
+        return cartItemRepository.save(cartItem);
     }
 
     public void deleteCartItem(int cartItemId) throws ResourceNotFoundException {

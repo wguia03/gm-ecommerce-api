@@ -12,4 +12,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(NotImplementedException.class)
+    public ResponseEntity<String> handleNotImplementedException(NotImplementedException ex){
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(ex.getMessage());
+    }
 }

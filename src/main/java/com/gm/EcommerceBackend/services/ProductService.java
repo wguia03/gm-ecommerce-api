@@ -84,4 +84,10 @@ public class ProductService {
         product.setStock_quantity(updatedStock);
         return productRepository.save(product);
     }
+
+    public boolean checkProductStock(int id, int quantity) throws ResourceNotFoundException {
+        Product product = this.findProduct(id);
+        int updatedStock = product.getStock_quantity() - quantity;
+        return updatedStock >= 0;
+    }
 }

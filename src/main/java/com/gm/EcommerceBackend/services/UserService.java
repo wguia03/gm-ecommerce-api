@@ -18,6 +18,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,10 @@ public class UserService {
     private final JwtUtils jwtUtils;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
     private final CartRepository cartRepository;
+
+    public UserEntity findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User is not available"));
+    }
 
     public AuthResponse createUser(AuthCreateUserRequest createRoleRequest) {
 
