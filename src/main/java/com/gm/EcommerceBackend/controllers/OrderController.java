@@ -1,14 +1,18 @@
 package com.gm.EcommerceBackend.controllers;
 
+import com.gm.EcommerceBackend.entities.Payment;
 import com.gm.EcommerceBackend.entities.PurchaseOrder;
 import com.gm.EcommerceBackend.exceptions.NotImplementedException;
 import com.gm.EcommerceBackend.exceptions.ResourceNotFoundException;
 import com.gm.EcommerceBackend.payloads.PurchaseOrderDTO;
 import com.gm.EcommerceBackend.services.OrderService;
+import com.gm.EcommerceBackend.services.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderService orderService;
+    private final PaymentService paymentService;
 
     @PostMapping("/orders")
     public ResponseEntity<PurchaseOrder> createOrder(@RequestBody @Valid PurchaseOrderDTO order) throws NotImplementedException, ResourceNotFoundException {
@@ -25,5 +30,10 @@ public class OrderController {
     @GetMapping("/orders/status/{id}")
     public ResponseEntity<String> getOrderStatus(@PathVariable Integer id) throws ResourceNotFoundException {
         return ResponseEntity.ok(orderService.getOrderStatus(id));
+    }
+
+    @PostMapping("/orders/payment/paypal/{id}")
+    public ResponseEntity<Payment> createOrderPayment(@PathVariable Integer id) throws ResourceNotFoundException, IOException {
+        return ResponseEntity.ok(paymentService.createPaypalPayment(id));
     }
 }
