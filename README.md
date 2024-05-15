@@ -14,7 +14,6 @@
 - [x] Revisar estado de compra
 
 ### Funcionalidades - Administrador
-- [x] Agregar, editar y eliminar productos
 - [x] Gestionar inventario de productos
 - [x] Gestionar pedidos de clientes
 
