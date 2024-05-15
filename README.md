@@ -19,7 +19,7 @@
 - [x] Gestionar pedidos de clientes
 
 ### Tech Stack
-- Java 21
+- Java 17
 - Spring Boot
 - Spring Web
 - Spring Data JPA
