@@ -5,6 +5,7 @@ import com.gm.EcommerceBackend.exceptions.NotImplementedException;
 import com.gm.EcommerceBackend.exceptions.ResourceNotFoundException;
 import com.gm.EcommerceBackend.payloads.PurchaseOrderDTO;
 import com.gm.EcommerceBackend.repositories.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,16 @@ public class OrderService {
     private final CartItemRepository cartItemRepository;
     private final CartRepository cartRepository;
 
+    public List<PurchaseOrder> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    public PurchaseOrder getOrderById(Integer id) throws ResourceNotFoundException {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+    }
+
+    @Transactional
     public PurchaseOrder createOrder(PurchaseOrderDTO purchaseOrderDTO) throws NotImplementedException, ResourceNotFoundException {
 
         UserEntity user = userService.findUserById(purchaseOrderDTO.userId());
@@ -49,24 +60,30 @@ public class OrderService {
                 .deliveryBranch(deliveryBranchRepository.findByName(DeliveryBranchEnum.valueOf(purchaseOrderDTO.deliveryBranch())))
                 .build();
 
-        orderRepository.save(purchaseOrder);
+        PurchaseOrder savedPurchaseOrder = orderRepository.save(purchaseOrder);
+
+        for (CartItem cartItem : cartItemList) {
+            System.out.println(cartItem.getProduct().getId());
+        }
 
         List<OrderItem> orderItemList = cartItemList.stream()
                 .filter(cartItem -> {
                     try {
-                        return productService.checkProductStock(cartItem.getId(), cartItem.getQuantity());
+                        return productService.checkProductStock(cartItem.getProduct().getId(), cartItem.getQuantity());
                     } catch (ResourceNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                 })
                 .map(cartItem ->
                         OrderItem.builder()
-                                .purchaseOrder(purchaseOrder)
+                                .purchaseOrder(savedPurchaseOrder)
                                 .quantity(cartItem.getQuantity())
                                 .item_price(cartItem.getItem_price())
                                 .product(cartItem.getProduct())
                                 .build())
                 .toList();
+
+        System.out.println("hola despues");
 
         orderItemList.forEach(orderItem -> {
             Product product = orderItem.getProduct();
@@ -92,5 +109,12 @@ public class OrderService {
         return orderRepository.findById(id)
                 .map(order -> order.getOrderStatus().getStatus().name())
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+    }
+
+    public void updateOrderStatus(Integer orderId, String orderStatus) throws ResourceNotFoundException {
+        PurchaseOrder order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        OrderStatus status = orderStatusRepository.findByStatus(OrderStatusEnum.valueOf(orderStatus));
+        order.setOrderStatus(status);
+        orderRepository.save(order);
     }
 }
